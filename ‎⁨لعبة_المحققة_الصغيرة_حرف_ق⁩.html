@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>المحققة الصغيرة - حرف ق</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#f5f3ff,#fff7ed);color:#172033}
+.wrap{max-width:850px;margin:auto;padding:24px 14px;text-align:center}
+.hero{background:#fff;border-radius:26px;padding:22px;box-shadow:0 4px 18px #0001}
+h1{margin:0 0 8px;font-size:30px} .hero p{margin:0;font-size:18px}
+.score{margin:18px;font-weight:bold;font-size:20px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card{border:3px solid #e5e7eb;background:#fff;border-radius:22px;padding:12px;min-height:150px;font-size:18px;font-weight:bold;cursor:pointer}
+.card:active{transform:scale(.97)}
+.pic{font-size:70px;height:85px;display:flex;align-items:center;justify-content:center}
+.ok{border-color:#22c55e;background:#f0fdf4}.wrong{border-color:#ef4444;background:#fef2f2}
+.msg{min-height:34px;margin:18px;font-weight:bold;font-size:18px}
+button.reset{border:0;background:#7c3aed;color:#fff;border-radius:14px;padding:13px 24px;font-size:17px;font-weight:bold}
+@media(max-width:600px){.cards{grid-template-columns:repeat(2,1fr)}h1{font-size:25px}.card{min-height:140px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hero">
+<h1>🔎 المحققة الصغيرة</h1>
+<p>اختاري الصور التي يبدأ اسمها بحرف <strong>ق</strong>!</p>
+</div>
+<div class="score">⭐ الكلمات الصحيحة: <span id="score">0</span> من 4</div>
+<div class="cards" id="cards"></div>
+<div class="msg" id="msg">هيا يا محققة، ابحثي عن الكلمات التي تبدأ بحرف ق 🔍</div>
+<button class="reset" id="reset">🔄 إعادة اللعبة</button>
+</div>
+<script>
+const items=[
+["قمر","🌙",true],["تفاحة","🍎",false],["قطة","🐱",true],["شمس","☀️",false],
+["قلم","✏️",true],["باب","🚪",false],["قبعة","🧢",true],["كتاب","📚",false]
+];
+const cards=document.getElementById("cards"), score=document.getElementById("score"), msg=document.getElementById("msg");
+function start(){
+ cards.innerHTML=""; score.textContent="0"; msg.textContent="هيا يا محققة، ابحثي عن الكلمات التي تبدأ بحرف ق 🔍";
+ items.forEach(([word,emoji,correct])=>{
+  const b=document.createElement("button"); b.className="card"; b.type="button";
+  b.innerHTML=`<div class="pic">${emoji}</div><div>${word}</div>`;
+  b.onclick=()=>{
+   if(b.dataset.done)return;
+   if(correct){
+    b.dataset.done="1"; b.classList.add("ok");
+    const n=Number(score.textContent)+1; score.textContent=n;
+    msg.textContent=n===4?"🎉 أحسنتِ! قبضتِ على جميع كلمات حرف ق!":"⭐ إجابة صحيحة! واصلي البحث.";
+   }else{
+    b.classList.add("wrong"); msg.textContent="💡 ليست هذه! ابحثي عن كلمة تبدأ بحرف ق.";
+    setTimeout(()=>{b.classList.remove("wrong"); msg.textContent="🔍 حاولي مرة أخرى!"},700);
+   }
+  };
+  cards.appendChild(b);
+ });
+}
+document.getElementById("reset").onclick=start; start();
+</script>
+</body>
+</html>
